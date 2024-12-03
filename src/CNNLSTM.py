@@ -59,15 +59,18 @@ def create_fc(input_dim=128, layer_dims=[64], num_classes=2, dropout=0.0):
     layers = []
     dims = [input_dim]
     dims.extend(layer_dims)
-    dims.append(num_classes)
+
     for i in range(len(dims)-1):
         layers.append(create_fc_layer(input_dim=dims[i], output_dim=dims[i+1], dropout=dropout))
+
+    layers.append(nn.Linear(in_features=dims[i+1], out_features=num_classes))
+
     return nn.Sequential(*layers)
 
 
 
 class CNNLSTM(nn.Module):
-    def __init__(self, input_size=28, num_classes=2, in_channels= 1, kernel_sizes=[5, 5], pool_sizes=[2, 2], 
+    def __init__(self, input_size=28, num_patches=16, num_classes=2, in_channels= 1, kernel_sizes=[5, 5], pool_sizes=[2, 2], 
                  conv_channels=[32, 64], num_LSTM_layers=3, hidden_dim=128, bidirectional_LSTM=False, LSTM_dropout=0.0, 
                  fc_dims=[64], fc_dropout=0.0):
         """
@@ -83,8 +86,11 @@ class CNNLSTM(nn.Module):
     
         self.lstm = nn.LSTM(input_size=self.cnn_output_dim, hidden_size=hidden_dim, num_layers=num_LSTM_layers, batch_first=True,
                             bidirectional=bidirectional_LSTM, dropout=LSTM_dropout)
-        lstm_output_dim = hidden_dim * (2 if bidirectional_LSTM else 1)
+        
+        lstm_output_dim = hidden_dim * (2 if bidirectional_LSTM else 1) * num_patches
+
         self.fc = create_fc(input_dim=lstm_output_dim, layer_dims=fc_dims, num_classes=num_classes, dropout=fc_dropout)
+        
         
 
     def forward(self, x):
@@ -106,7 +112,10 @@ class CNNLSTM(nn.Module):
         # Process the sequence with the LSTM
         lstm_out, _ = self.lstm(features)  # Shape: [batch_size, num_patches, hidden_dim]
         
+        # Flatten 
+        fc_input = lstm_out.reshape(batch_size, -1)
+
         # Apply the fully connected layer to each patch output
-        outputs = self.fc(lstm_out)  # Shape: [batch_size, num_patches, num_classes]
+        outputs = self.fc(fc_input)  # Shape: [batch_size, num_patches, num_classes]
         
         return outputs

@@ -44,14 +44,15 @@ def main(args):
                                                                    return_whole_puzzle=False)
     print("\n ---Dataloaders succusfully created--- \n")
 
-    
+
     kernel_sizes = [int(kernel_size) for kernel_size in args.kernel_sizes.split(',')]
     pool_sizes = [int(pool_size) for pool_size in args.pool_sizes.split(',')]
     conv_channels = [int(conv_channel) for conv_channel in args.conv_channels.split(',')]
     fc_dims = [int(fc_dim) for fc_dim in args.fc_dims.split(',')]
 
     model = CNNLSTM(input_size=28, 
-                    num_classes=n_classes, 
+                    num_patches=16,
+                    num_classes=2, 
                     in_channels=1, 
                     kernel_sizes=kernel_sizes,
                     pool_sizes=pool_sizes,
