@@ -1,6 +1,6 @@
 import torch
 from torch import nn
-from CNNLSTM import CNNLSTM
+from src.CNNLSTM import CNNLSTM
 from utils import options
 from utils.make_dataloader import get_loaders
 from utils.scheduler import build_scheduler
