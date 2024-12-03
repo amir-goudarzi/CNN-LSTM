@@ -32,6 +32,14 @@
    SCHEDULER_USED=False
    NUM_EPOCHS=10
    NUM_WORKERS=1
+
+   # Data parameters
+   DIR="your working directory"
+   DATASET_PATH="path to the dataset from DIR"
+   
+   # Neptune integration
+   NEPTUNE_PROJECT="your_project_name"
+   NEPTUNE_API_TOKEN="your_api_token"
    
    python ./main.py \
       --kernel_sizes "$KERNEL_SIZES" \
@@ -48,4 +56,8 @@
       --learning_rate "$LEARNING_RATE" \
       --scheduler "$SCHEDULER_USED" \
       --num_epochs "$NUM_EPOCHS" \
-      --num_workers "$NUM_WORKERS"
+      --num_workers "$NUM_WORKERS" \
+      --dir "$DIR" \
+      --dataset_path "$DATASET_PATH" \
+      --neptune_project "$NEPTUNE_PROJECT" \
+      --neptune_api_token "$NEPTUNE_API_TOKEN"
