@@ -1,6 +1,5 @@
 import torch
 from torch import nn
-from torch.optim import bui
 from CNNLSTM import CNNLSTM
 from utils import options
 from utils.make_dataloader import get_loaders
@@ -136,7 +135,6 @@ def main(args):
         train(epoch)
     test()
     run.stop()
-
 
 
 if __name__ == "__main__":
