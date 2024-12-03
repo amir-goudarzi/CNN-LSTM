@@ -9,6 +9,17 @@ import os
 
 def main(args):
 
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+    print("\n--- GPU Information ---\n")
+
+    if torch.cuda.is_available():
+        print(f"Model is using device: {device}")
+        print(f"CUDA Device: {torch.cuda.get_device_name(device)}")
+        print(f"Total Memory: {torch.cuda.get_device_properties(device).total_memory / 1024 ** 2} MB")
+    else:
+        print("Model is using CPU")
+
     params = {
         "KERNEL_SIZES": args.kernel_sizes,
         "POOL_SIZES": args.pool_sizes,
@@ -27,14 +38,15 @@ def main(args):
         "NUM_WORKERS": args.num_workers
     }
 
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     train_loader, val_loader, test_loader, n_classes = get_loaders(batch_size= params['BATCH_SIZE'], 
                                                                    num_workers=params['NUM_WORKERS'], 
                                                                    path= os.path.join(args.dir, args.dataset_path), 
                                                                    return_whole_puzzle=False)
+    print("\n ---Dataloaders succusfully created--- \n")
+
     
-    kernel_sizes = [int(kernel_size) for kernel_size in args.kernel_sizez.split(',')]
-    pool_sizes = [int(pool_size) for pool_size in args.pool_sizez.split(',')]
+    kernel_sizes = [int(kernel_size) for kernel_size in args.kernel_sizes.split(',')]
+    pool_sizes = [int(pool_size) for pool_size in args.pool_sizes.split(',')]
     conv_channels = [int(conv_channel) for conv_channel in args.conv_channels.split(',')]
     fc_dims = [int(fc_dim) for fc_dim in args.fc_dims.split(',')]
 
