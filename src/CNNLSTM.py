@@ -82,15 +82,16 @@ class CNNLSTM(nn.Module):
         super().__init__()
         self.final_state = final_state 
 
-        self.cnn, self.cnn_output_dim = create_cnn(input_size= input_size, in_channels=in_channels, conv_channels=conv_channels, 
+        self.cnn, self.cnn_output_dim = create_cnn(input_size=input_size, in_channels=in_channels, conv_channels=conv_channels, 
                                                    kernel_sizes=kernel_sizes, pool_sizes=pool_sizes)   
     
         self.lstm = nn.LSTM(input_size=self.cnn_output_dim, hidden_size=hidden_dim, num_layers=num_LSTM_layers, batch_first=True,
                             bidirectional=bidirectional_LSTM, dropout=LSTM_dropout)
         
-        lstm_output_dim = hidden_dim * (2 if bidirectional_LSTM else 1) 
+        if final_state:
+            lstm_output_dim = hidden_dim 
         if not final_state:
-            lstm_output_dim = lstm_output_dim * num_patches
+            lstm_output_dim = hidden_dim * num_patches * (2 if bidirectional_LSTM else 1) 
 
         self.fc = create_fc(input_dim=lstm_output_dim, layer_dims=fc_dims, num_classes=num_classes, dropout=fc_dropout)
         
