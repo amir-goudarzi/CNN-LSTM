@@ -17,6 +17,7 @@
    Use the following script to specify the parameters and train the model. 
 
    ```bash
+   FINAL_STATE=False
    KERNEL_SIZES="5, 5"
    POOL_SIZES="2, 2"
    CONV_CHANNELS="32, 64"
@@ -42,6 +43,7 @@
    NEPTUNE_API_TOKEN="your_api_token"
    
    python ./main.py \
+      --final_state "$FINAL_STATE" \
       --kernel_sizes "$KERNEL_SIZES" \
       --pool_sizes "$POOL_SIZES" \
       --conv_channels "$CONV_CHANNELS" \
