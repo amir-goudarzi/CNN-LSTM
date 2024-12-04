@@ -63,14 +63,14 @@ def create_fc(input_dim=128, layer_dims=[64], num_classes=2, dropout=0.0):
     for i in range(len(dims)-1):
         layers.append(create_fc_layer(input_dim=dims[i], output_dim=dims[i+1], dropout=dropout))
 
-    layers.append(nn.Linear(in_features=dims[i+1], out_features=num_classes))
+    layers.append(nn.Linear(in_features=dims[-1], out_features=num_classes))
 
     return nn.Sequential(*layers)
 
 
 
 class CNNLSTM(nn.Module):
-    def __init__(self, input_size=28, num_patches=16, num_classes=2, in_channels= 1, kernel_sizes=[5, 5], pool_sizes=[2, 2], 
+    def __init__(self, final_state=False, input_size=28, num_patches=16, num_classes=2, in_channels= 1, kernel_sizes=[5, 5], pool_sizes=[2, 2], 
                  conv_channels=[32, 64], num_LSTM_layers=3, hidden_dim=128, bidirectional_LSTM=False, LSTM_dropout=0.0, 
                  fc_dims=[64], fc_dropout=0.0):
         """
@@ -80,6 +80,7 @@ class CNNLSTM(nn.Module):
         :param hidden_dim: Number of hidden units in LSTM.
         """
         super().__init__()
+        self.final_state = final_state 
 
         self.cnn, self.cnn_output_dim = create_cnn(input_size= input_size, in_channels=in_channels, conv_channels=conv_channels, 
                                                    kernel_sizes=kernel_sizes, pool_sizes=pool_sizes)   
@@ -87,7 +88,9 @@ class CNNLSTM(nn.Module):
         self.lstm = nn.LSTM(input_size=self.cnn_output_dim, hidden_size=hidden_dim, num_layers=num_LSTM_layers, batch_first=True,
                             bidirectional=bidirectional_LSTM, dropout=LSTM_dropout)
         
-        lstm_output_dim = hidden_dim * (2 if bidirectional_LSTM else 1) * num_patches
+        lstm_output_dim = hidden_dim * (2 if bidirectional_LSTM else 1) 
+        if not final_state:
+            lstm_output_dim = lstm_output_dim * num_patches
 
         self.fc = create_fc(input_dim=lstm_output_dim, layer_dims=fc_dims, num_classes=num_classes, dropout=fc_dropout)
         
@@ -110,10 +113,13 @@ class CNNLSTM(nn.Module):
         features = features.view(batch_size, num_patches, -1)  # Shape: [batch_size, num_patches, cnn_output_dim]
         
         # Process the sequence with the LSTM
-        lstm_out, _ = self.lstm(features)  # Shape: [batch_size, num_patches, hidden_dim]
+        lstm_out, (h_n, c_n) = self.lstm(features)  # Shape: [batch_size, num_patches, hidden_dim]
         
-        # Flatten 
-        fc_input = lstm_out.reshape(batch_size, -1)
+        if self.final_state:
+            fc_input = h_n[-1]
+        else:
+            # Flatten 
+            fc_input = lstm_out.reshape(batch_size, -1)
 
         # Apply the fully connected layer to each patch output
         outputs = self.fc(fc_input)  # Shape: [batch_size, num_patches, num_classes]

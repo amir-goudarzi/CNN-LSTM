@@ -21,6 +21,7 @@ def main(args):
         print("Model is using CPU")
 
     params = {
+        "FINAL_STATE": args.final_state,
         "KERNEL_SIZES": args.kernel_sizes,
         "POOL_SIZES": args.pool_sizes,
         "CONV_CHANNELS": args.conv_channels,
@@ -48,9 +49,11 @@ def main(args):
     kernel_sizes = [int(kernel_size) for kernel_size in args.kernel_sizes.split(',')]
     pool_sizes = [int(pool_size) for pool_size in args.pool_sizes.split(',')]
     conv_channels = [int(conv_channel) for conv_channel in args.conv_channels.split(',')]
-    fc_dims = [int(fc_dim) for fc_dim in args.fc_dims.split(',')]
+    fc_dims = [int(fc_dim) for fc_dim in args.fc_dims.split(',')] if args.fc_dims else []
 
-    model = CNNLSTM(input_size=28, 
+
+    model = CNNLSTM(final_state=final_state,
+                    input_size=28, 
                     num_patches=16,
                     num_classes=2, 
                     in_channels=1, 

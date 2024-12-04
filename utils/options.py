@@ -5,6 +5,7 @@ def read_command_line():
     parser = argparse.ArgumentParser(description='CNN+LSTM')
 
     # Model parameters
+    parser.add_argument('--final_state', type=bool, required=False, default=False,help='Uses only the final hidden state')
     parser.add_argument('--kernel_sizes', type=str, required=False, default="5, 5", help='Kernel sizes for each conv layer')
     parser.add_argument('--pool_sizes', type=str, required=False, default="2, 2", help='Pool sizes for each conv layer')
     parser.add_argument('--conv_channels', type=str, required=False, default="32, 64", help='Output channels for each conv layer')
