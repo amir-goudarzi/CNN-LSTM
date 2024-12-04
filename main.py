@@ -52,7 +52,7 @@ def main(args):
     fc_dims = [int(fc_dim) for fc_dim in args.fc_dims.split(',')] if args.fc_dims else []
 
 
-    model = CNNLSTM(final_state=final_state,
+    model = CNNLSTM(final_state=args.final_state,
                     input_size=28, 
                     num_patches=16,
                     num_classes=2, 
