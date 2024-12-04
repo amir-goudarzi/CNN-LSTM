@@ -17,20 +17,20 @@
    Use the following script to specify the parameters and train the model. 
 
    ```bash
-   FINAL_STATE=False
+   FINAL_STATE="" # Bool
    KERNEL_SIZES="5, 5"
    POOL_SIZES="2, 2"
    CONV_CHANNELS="32, 64"
    NUM_LSTM_LAYERS=3
    LSTM_DIM=128
-   BIDIRECTIONAL_LSTM=False
+   BIDIRECTIONAL_LSTM="" # Bool
    LSTM_DROPOUT=0.0
    FC_DIMS="64"
    FC_DROPOUT=0.0
    BATCH_SIZE=10
    ADAM_OPTIMIZER=True
    LEARNING_RATE=0.0001
-   SCHEDULER_USED=False
+   SCHEDULER_USED="" # Bool
    NUM_EPOCHS=10
    NUM_WORKERS=1
 
