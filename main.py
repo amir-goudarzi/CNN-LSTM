@@ -107,7 +107,7 @@ def main(args):
 
             print(f'Epoch {epoch+1}, Loss: {loss.item():.2f}')
         train_accuracy = ((correct_train / total_train) * 100)
-        print(f'Epoch {epoch+1}, Train accuracy: {train_accuracy:.2f}')
+        print(f'\n\n-----Epoch {epoch+1}, Train accuracy: {train_accuracy:.2f}-----')
         run[f"train/accuracy"].log(train_accuracy)
 
 
@@ -115,16 +115,20 @@ def main(args):
             x, _, sudoku_label = batch
             x, sudoku_label = x.to(device), sudoku_label.to(device)
             y = model(x)
+            loss = loss_fn(y, sudoku_label)
             predictions = torch.argmax(y, 1)
             total += x.shape[0]
             correct += predictions.eq(sudoku_label).sum().item()
+
+            # Log training loss to Neptune
+            run[f"val/loss"].log(loss.item())
 
         acc = (correct / total) * 100
 
         # Log validation accuracy to Neptune
         run[f"val/accuracy"].log(acc)
 
-        print(f'Epoch {epoch+1}, acc: {acc:.2f}')
+        print(f'-----Epoch {epoch+1}, Validation accuracy: {acc:.2f}-----\n\n')
         if args.scheduler:
             scheduler.step()
 
