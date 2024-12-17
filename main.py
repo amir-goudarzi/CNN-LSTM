@@ -152,6 +152,8 @@ def main(args):
 
         print(f'\n\nTest accuracy: {acc:.2f}\n\n')
 
+    print("\n\n--Started Training--\n\n")
+
     for epoch in range(args.num_epochs):
         train(epoch)
     test()
