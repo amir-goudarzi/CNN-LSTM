@@ -42,6 +42,7 @@ def main(args):
     train_loader, val_loader, test_loader, n_classes = get_loaders(batch_size= params['BATCH_SIZE'], 
                                                                    num_workers=params['NUM_WORKERS'], 
                                                                    path= os.path.join(args.dir, args.dataset_path), 
+                                                                   split=None,
                                                                    return_whole_puzzle=False)
     print("\n ---Dataloaders succusfully created--- \n")
 
@@ -120,7 +121,7 @@ def main(args):
             total += x.shape[0]
             correct += predictions.eq(sudoku_label).sum().item()
 
-            # Log training loss to Neptune
+            # Log validation loss to Neptune
             run[f"val/loss"].log(loss.item())
 
         acc = (correct / total) * 100
