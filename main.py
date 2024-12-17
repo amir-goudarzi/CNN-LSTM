@@ -106,9 +106,9 @@ def main(args):
             # Log training loss to Neptune
             run[f"train/loss"].log(loss.item())
 
-            print(f'Epoch {epoch+1}, Loss: {loss.item():.2f}')
+            # print(f'Epoch {epoch+1}, Loss: {loss.item():.2f}')
         train_accuracy = ((correct_train / total_train) * 100)
-        print(f'\n\n-----Epoch {epoch+1}, Train accuracy: {train_accuracy:.2f}-----')
+        # print(f'\n\n-----Epoch {epoch+1}, Train accuracy: {train_accuracy:.2f}-----')
         run[f"train/accuracy"].log(train_accuracy)
 
 
@@ -129,7 +129,7 @@ def main(args):
         # Log validation accuracy to Neptune
         run[f"val/accuracy"].log(acc)
 
-        print(f'-----Epoch {epoch+1}, Validation accuracy: {acc:.2f}-----\n\n')
+        # print(f'-----Epoch {epoch+1}, Validation accuracy: {acc:.2f}-----\n\n')
         if args.scheduler:
             scheduler.step()
 
@@ -150,7 +150,7 @@ def main(args):
         # Log testing accuracy to Neptune
         run[f"test/accuracy"].log(acc)
 
-        print(f'Test accuracy: {acc:.2f}')
+        print(f'\n\nTest accuracy: {acc:.2f}\n\n')
 
     for epoch in range(args.num_epochs):
         train(epoch)
