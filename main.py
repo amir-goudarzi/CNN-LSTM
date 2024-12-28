@@ -42,7 +42,7 @@ def main(args):
     train_loader, val_loader, test_loader, n_classes = get_loaders(batch_size= params['BATCH_SIZE'], 
                                                                    num_workers=params['NUM_WORKERS'], 
                                                                    path= os.path.join(args.dir, args.dataset_path), 
-                                                                   split=None,
+                                                                   split=args.split,
                                                                    return_whole_puzzle=False)
     print("\n ---Dataloaders succusfully created--- \n")
 

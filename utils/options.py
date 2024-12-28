@@ -30,6 +30,7 @@ def read_command_line():
     parser.add_argument('--dataset_path', default='VisualSudoku', type=str, help='The path to the training data.')
     parser.add_argument("--neptune_project", type=str, help="Neptune project directory")
     parser.add_argument("--neptune_api_token", type=str, help="Neptune api token")
+    parser.add_argument("--split", type=int, required=False, default=10, help="Data split")
 
     args = parser.parse_args()
     return args
