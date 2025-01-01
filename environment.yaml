@@ -12,8 +12,7 @@ dependencies:
   - pathlib
   - pip
   - pytorch
-  - torchvision
-  - torchaudio
+  - tqdm
   - pytorch-cuda=11.7  
   - pip:
       - neptune-client
