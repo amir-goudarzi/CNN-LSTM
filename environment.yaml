@@ -2,11 +2,8 @@ name: cnn_lstm_env
 channels:
   - defaults
   - conda-forge
-  - pytorch
 dependencies:
   - python=3.8
-  - torch
-  - torchvision
   - numpy
   - webdataset
   - wget
