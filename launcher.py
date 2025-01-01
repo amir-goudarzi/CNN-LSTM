@@ -36,6 +36,8 @@ neptune_project = "GRAINS/visual-sudoku"
 neptune_api_token = "eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly\
 9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiJkMDQ2YThmNS1jNWU0LTQxZDItYTQxNy1lMGYzNTM4MmY5YTgifQ=="
 
+directory = "./"
+
 # Loop over each combination
 for params in param_combinations:
 
@@ -61,7 +63,8 @@ for params in param_combinations:
        --num_epochs "{num_epochs}" \
        --num_workers "{num_workers}" \
        --neptune_project "{neptune_project}" \
-       --neptune_api_token "{neptune_api_token}"
+       --neptune_api_token "{neptune_api_token}" \
+       --dir "{directory}"
     """
     # command = f"""FINAL_STATE={}
     #              echo $FINAL_STATE"""
