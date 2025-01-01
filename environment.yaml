@@ -2,6 +2,8 @@ name: cnn_lstm_env
 channels:
   - defaults
   - conda-forge
+  - pytorch
+  - nvidia
 dependencies:
   - python=3.10
   - numpy
@@ -9,5 +11,9 @@ dependencies:
   - wget
   - pathlib
   - pip
+  - pytorch
+  - torchvision
+  - torchaudio
+  - pytorch-cuda=11.7  
   - pip:
       - neptune-client
